@@ -1,32 +1,22 @@
 class Solution {
 public:
     vector<string> findRepeatedDnaSequences(string s) {
-        map<deque<char>,int>m;
-        if(s.length()<=10)
-            return {};
-        deque<char> dq;
-        for(int i=0;i<10;i++)
-            dq.push_back(s[i]);
-        m[dq]++;
-        int j=10;
-        while(j<s.length())
+    
+        map<size_t,int> m;
+        hash<string> hash_fn;
+        vector<string> v;
+        set<string> st;
+        for(int i=0;i<int(s.size())-9;i++)
         {
-            dq.pop_front();
-            dq.push_back(s[j]);
-            m[dq]++;
-            j++;
+            string temp=s.substr(i,10);
+            m[hash_fn(temp)]++;
+            if(m[hash_fn(temp)]>1)
+                st.insert(temp);
         }
-        vector<string> res;
-        for(auto i:m)
+        for(auto i:st)
         {
-            if(i.second>1)
-            {
-                string temp;
-                for(auto j:i.first)
-                    temp.push_back(j);
-                res.push_back(temp);
-            }
+            v.push_back(i);
         }
-        return res;
+        return v;
     }
 };
