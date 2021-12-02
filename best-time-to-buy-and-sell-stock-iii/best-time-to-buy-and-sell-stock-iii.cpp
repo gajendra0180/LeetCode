@@ -1,30 +1,16 @@
 class Solution {
 public:
-    struct HASH{
-	size_t operator()(const pair<int,pair<int,int>> &x)const{
-		return hash<int>()(x.first^(x.second.first)^(x.second.second));
+int maxProfit(vector<int>& prices) {
+	if(prices.empty()) return 0;
+	int s1=-prices[0],s2=INT_MIN,s3=INT_MIN,s4=INT_MIN;
+        
+	for(int i=1;i<prices.size();++i) {            
+		s1 = max(s1, -prices[i]);
+		s2 = max(s2, s1+prices[i]);
+		s3 = max(s3, s2-prices[i]);
+		s4 = max(s4, s3+prices[i]);
 	}
-};
-    unordered_map<pair<int,pair<int,int>>,int,HASH> m;
-    int profit(vector<int>&v,int buy,int i,int k)
-    {
-        if(i==v.size()||k==2)
-            return 0;
-        
-        if(m.find({i,{k,buy}})!=m.end())
-            return  m[{i,{k,buy}}];
-        
-        if(buy)
-        {
-            return m[{i,{k,buy}}] = max(-v[i]+profit(v,0,i+1,k),profit(v,1,i+1,k));   
-        }
-        else
-        {
-            return m[{i,{k,buy}}] = max(v[i]+profit(v,1,i+1,k+1),profit(v,0,i+1,k));
-        }
+	return max(0,s4);
     }
-    
-    int maxProfit(vector<int>& prices) {
-        return profit(prices,1,0,0);
-    }
+
 };
