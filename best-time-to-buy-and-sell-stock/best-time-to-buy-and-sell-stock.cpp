@@ -1,25 +1,13 @@
 class Solution {
 public:
-    map<pair<int,int>,int> m;
-    int profit(vector<int>&v,int buy,int i,int run)
-    {
-        if(i==v.size()||run==0)
-            return 0;
-        
-        if(m.find({i,buy})!=m.end())
-            return m[{i,buy}];
-        
-        if(buy)
-        {
-            return m[{i,buy}] = max(-v[i]+profit(v,0,i+1,1),profit(v,1,i+1,1));   
-        }
-        else
-        {
-            return m[{i,buy}] = max(v[i]+profit(v,0,i+1,0),profit(v,0,i+1,1));
-        }
-    }
-    
     int maxProfit(vector<int>& prices) {
-        return profit(prices,1,0,1);
+        if(prices.empty()) return 0;
+	int s1=-prices[0],s2=INT_MIN,s3=INT_MIN,s4=INT_MIN;
+        
+	for(int i=1;i<prices.size();++i) {            
+		s1 = max(s1, -prices[i]);
+		s2 = max(s2, s1+prices[i]);
+	}
+	return max(0,s2);
     }
 };
