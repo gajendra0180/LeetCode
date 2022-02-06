@@ -29,7 +29,8 @@ public:
     }
     
     void flip() {
-        swap(bitset,invertedBitset);
+        // swap(bitset,invertedBitset);
+        bitset.swap(invertedBitset);
         swap(ones,zeros);
     }
     
