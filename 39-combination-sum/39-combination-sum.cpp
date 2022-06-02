@@ -2,7 +2,6 @@ class Solution {
 public:
     vector<vector<int>>res;
     void combination(vector<int>&candidates,int index,int target,vector<int>&temp){
-        
         if(target==0)
         {
             res.push_back(temp);
@@ -11,12 +10,12 @@ public:
         if(index>=candidates.size() || target<0)
             return;
         
-        if(candidates[index]<=target){
-            temp.push_back(candidates[index]);
-            combination(candidates,index,target-candidates[index],temp);
+        for(int i=index;i<candidates.size();i++){
+            temp.push_back(candidates[i]);
+            combination(candidates,i,target-candidates[i],temp);
             temp.pop_back();
         }
-        combination(candidates,index+1,target,temp);
+        // combination(candidates,index+1,target,temp);
     }
     
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
