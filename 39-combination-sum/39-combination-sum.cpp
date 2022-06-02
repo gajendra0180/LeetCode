@@ -3,14 +3,14 @@ public:
     vector<vector<int>>res;
     void combination(vector<int>&candidates,int index,int target,vector<int>&temp){
         
-        if(index>=candidates.size() || target<0)
-            return;
-        
         if(target==0)
         {
             res.push_back(temp);
             return;
         }
+        if(index>=candidates.size() || target<0)
+            return;
+        
         if(candidates[index]<=target){
             temp.push_back(candidates[index]);
             combination(candidates,index,target-candidates[index],temp);
