@@ -1,6 +1,6 @@
 class Solution {
 public:
-    map<string,int> m;
+    unordered_map<string,int> m;
 //     return if s is a subsequence of t
      bool isSubsequence(string s, string t) {
         int i=0,j=0;
