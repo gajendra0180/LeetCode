@@ -4,11 +4,15 @@ public:
 //     return if s is a subsequence of t
      bool isSubsequence(string s, string t) {
         int i=0,j=0;
+         string temp;
         while(j<t.size()&&i<s.size()){
             
             if(t[j]==s[i])
+            {
+                temp.push_back(s[i]);
+                m[temp]=1;
                 i++;
-            
+            } 
             j++;
         }
         return i==s.size();
