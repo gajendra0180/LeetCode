@@ -1,39 +1,29 @@
+struct Node {
+    const string& word;
+    int index;
+    Node(const string &word, int index) : word(word), index(index) {}
+};
 class Solution {
 public:
-    unordered_map<string,int> m;
-//     return if s is a subsequence of t
-     bool isSubsequence(string s, string t) {
-        int i=0,j=0;
-         string temp;
-        while(j<t.size()&&i<s.size()){
-            
-            if(t[j]==s[i])
-            {
-                temp.push_back(s[i]);
-                m[temp]=1;
-                i++;
-            } 
-            j++;
+    int numMatchingSubseq(const string& s, vector<string>& words) {
+        vector<Node> buckets[26];
+        for (string& word : words) {
+            char startingChar = word[0];
+            buckets[startingChar-'a'].emplace_back(word, 0);
         }
-        return i==s.size();
-    }
-    int numMatchingSubseq(string s, vector<string>& words) {
-        int res=0;
-        for(auto i:words){
-            if(m.find(i)!=m.end())
-            {
-                res+=m[i];
-                continue;
-            }
-            if(isSubsequence(i,s)){
-                res++;
-                m[i]=1;
-            }
-            else
-            {
-                m[i]=0;
+        int ans = 0;
+        for (char c : s) {
+            auto currBucket = buckets[c-'a'];
+            buckets[c-'a'].clear();
+            for (Node& node : currBucket) {
+                ++node.index; // Point to next character of node.word
+                if (node.index == node.word.size()) {
+                    ++ans;
+                } else {
+                    buckets[node.word[node.index]-'a'].push_back(node);
+                }
             }
         }
-        return res;
+        return ans;
     }
 };
