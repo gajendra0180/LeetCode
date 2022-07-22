@@ -1,34 +1,35 @@
 class Solution {
 public:
-    map<pair<int,int>,int> m;
-    int minn(int i,int j,vector<vector<int>>& dungeon)
-    {
+    int arr[201][201];
+    int h(vector<vector<int>>& g,int i,int j){
         
-        if(i==dungeon.size()||j==dungeon[0].size())
+        if(i>=g.size() || j>=g[0].size())
             return 1e9;
         
-        if(i==dungeon.size()-1&&j==dungeon[0].size()-1)
-        {
-            if(dungeon[i][j]<=0)
-                return 1-dungeon[i][j];
-            return 1;
+        if(i==g.size()-1&&j==g[0].size()-1){
+                if(g[i][j]>0)
+                    return arr[i][j]=1;
+            else
+                return arr[i][j]=1-(g[i][j]);
         }
-        if(m.find({i,j})!=m.end())
-            return m[{i,j}];
+      if(arr[i][j]!=-1)
+          return arr[i][j];
+        int rightMeJaneKeLiyeItniHealthChahiye=h(g,i,j+1);
+        int downMeJaneKeLiyeItniHealthChahiye=h(g,i+1,j);
         
-        int ifWeGoRight=minn(i,j+1,dungeon);
-        int ifWeGoDown=minn(i+1,j,dungeon);
+        int healthRequired=min(rightMeJaneKeLiyeItniHealthChahiye,downMeJaneKeLiyeItniHealthChahiye)-g[i][j];
         
-        int minHealthReq=min(ifWeGoDown,ifWeGoRight)-dungeon[i][j];
-         
-        if(minHealthReq<=0)
-             return m[{i,j}] =1;
-        return m[{i,j}] = minHealthReq;
-        
+        if(healthRequired<=0)
+            return arr[i][j]= 1;
+        else
+            return arr[i][j]=abs(healthRequired);
         
     }
     
     int calculateMinimumHP(vector<vector<int>>& dungeon) {
-            return minn(0,0,dungeon);
+        for(int i=0;i<201;i++){
+            for(int j=0;j<201;j++){arr[i][j]=-1;}
+        }
+        return h(dungeon,0,0);
     }
 };
