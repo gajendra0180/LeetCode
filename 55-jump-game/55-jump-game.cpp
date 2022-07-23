@@ -4,7 +4,9 @@ public:
     bool can(vector<int>&nums,int i){
       if(i>=nums.size()-1)
           return true;
-        
+
+        if(nums[i]==0)
+            return false;
         // cout<<i<<endl;
         if(arr[i]!=-1)
             return arr[i];
