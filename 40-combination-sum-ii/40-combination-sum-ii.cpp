@@ -1,39 +1,37 @@
 class Solution {
 public:
-        vector<vector<int>>res;
-    void combination(vector<int>&candidates,int index,int target,vector<int>&temp){
-        if(target==0)
-        {
-            res.push_back(temp);
+     vector<vector<int>>res;
+    // map<vector<int>,int>res;
+    void get(vector<int>&v,int t,int i,int sum,vector<int>tres){
+        
+        if(i>=v.size())
+            return;
+        
+        if(sum+v[i]==t){
+            tres.push_back(v[i]);
+            res.push_back(tres);
+            // res[tres]=1;
             return;
         }
-        if(index>=candidates.size() || target<0)
-            return;
-
-        for(int i=index+1;i<candidates.size();i++){
-            
-            if(i!=index+1){
-                if(candidates[i-1]==candidates[i])
-                continue;
-            }
-            
-            temp.push_back(candidates[i]);
-            combination(candidates,i,target-candidates[i],temp);
-            temp.pop_back();
+        
+        if(sum+v[i]<t){
+            //nhi liya 
+            int temp=i;
+            while(temp<v.size()&&v[temp]==v[i])
+                temp++;
+            get(v,t,temp,sum,tres);
+            //liya
+            tres.push_back(v[i]);
+            sum+=v[i];
+            get(v,t,i+1,sum,tres);
         }
     }
-    
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        sort(candidates.begin(),candidates.end());
-        
-        for(int i=0;i<candidates.size();i++){
-            if(i!=0&&candidates[i-1]==candidates[i])
-                continue;
-         vector<int>temp{candidates[i]};
-            combination(candidates,i,target-candidates[i],temp);
-        }
-        
+    vector<vector<int>> combinationSum2(vector<int>& v, int target) {
+        sort(v.begin(),v.end());
+        get(v,target,0,0,{});
+        vector<vector<int>>fres;
+        // for(auto i:res)
+            // fres.push_back(i.first);
         return res;
-        
     }
 };
