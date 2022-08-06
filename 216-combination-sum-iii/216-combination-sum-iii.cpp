@@ -1,32 +1,29 @@
 class Solution {
 public:
-      vector<vector<int>>res;
-    void combination(vector<int>&candidates,int index,int target,vector<int>&temp,int chances){
-        if(target==0 &&chances==1)
-        {
-            res.push_back(temp);
+    vector<vector<int>>res;int k_limit;
+    void get(int n,int t,int sum,vector<int>tres,int size){
+        
+        if(n==10 || size>k_limit)
+            return;
+        
+        if(sum+n==t && size==k_limit-1){
+            tres.push_back(n);
+            res.push_back(tres);
             return;
         }
-        if(index>=candidates.size() || target<0 || chances<=0)
-            return;
-
-        for(int i=index+1;i<candidates.size();i++){
-            
-            temp.push_back(candidates[i]);
-            combination(candidates,i,target-candidates[i],temp,chances-1);
-            temp.pop_back();
+        
+        if(sum+n<t){
+            //nhi liya 
+            get(n+1,t,sum,tres,size);
+            //liya
+            tres.push_back(n);
+            sum+=n;
+            get(n+1,t,sum,tres,size+1);
         }
     }
-    
-    vector<vector<int>> combinationSum3(int k, int target) {
-     
-        vector<int>candidates{1,2,3,4,5,6,7,8,9};
-        
-          for(int i=0;i<candidates.size();i++){
-         vector<int>temp{candidates[i]};
-            combination(candidates,i,target-candidates[i],temp,k);
-        }
-        
+    vector<vector<int>> combinationSum3(int k, int n) {
+        k_limit=k;
+        get(1,n,0,{},0);
         return res;
     }
 };
