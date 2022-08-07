@@ -1,10 +1,10 @@
 class Solution {
 public:
-    void dfs(int u,map<int,vector<int>>&g,unordered_map<int,int>&vis,unordered_map<int,int>&rt){
+    void dfs(int u,map<int,vector<int>>&g,unordered_map<int,int>&vis){
         for(auto v:g[u]){
-            if(!vis[v]&&rt.find(v)==rt.end()){
+            if(!vis[v]){
                 vis[v]=1;
-                dfs(v,g,vis,rt);
+                dfs(v,g,vis);
             }        
         }
     }
@@ -18,14 +18,13 @@ public:
         }
         for(int i=0;i<n;i++)vis[i]=0;
         vis[0]=1;
-        unordered_map<int,int>rt;
-        for(auto i:restricted)rt[i]=1;
-        dfs(0,graph,vis,rt);
+        for(auto i:restricted)vis[i]=1;
+        dfs(0,graph,vis);
         int res=0;
         for(auto i:vis){
             // cout<<i.first<<" "<<i.second<<endl;
             if(i.second==1)res++;
         }
-        return res;
+        return res-restricted.size();
     }
 };
