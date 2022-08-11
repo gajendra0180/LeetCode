@@ -1,50 +1,37 @@
 class Solution {
 public:
-    int arr[71][71][71];
-    int cherry(int i1,int j1,int i2,int j2,vector<vector<int>>&grid){
-        if(j1<0 || j2<0 || j2>=grid[0].size() || j1>=grid[0].size())
+    int dp[71][71][71];
+    int get(vector<vector<int>>&grid,int x1,int y1,int y2){
+        
+        if(x1==grid.size())
+            return 0;
+        
+        if(y1<0 || y2<0 || y1>=grid[0].size() || y2>=grid[0].size())
             return INT_MIN;
         
-        if(i1==grid.size()-1 && i2==grid.size()-1){
-             if(i1==i2&&j1==j2)
-            return  grid[i1][j1];
+        int cherry=0;
+        if(y1==y2)cherry+=grid[x1][y1];
         else
-            return  grid[i1][j1]+grid[i2][j2];
-        }
+            cherry+=grid[x1][y1]+grid[x1][y2];
+        
+        if(dp[x1][y1][y2]!=-1)
+            return dp[x1][y1][y2];
+        
+        int a=get(grid,x1+1,y1-1,y2-1);
+        int b=get(grid,x1+1,y1-1,y2);
+        int c=get(grid,x1+1,y1-1,y2+1);
+        int d=get(grid,x1+1,y1,y2-1);
+        int e=get(grid,x1+1,y1,y2);
+        int f=get(grid,x1+1,y1,y2+1);
+        int g=get(grid,x1+1,y1+1,y2-1);
+        int h=get(grid,x1+1,y1+1,y2);
+        int i=get(grid,x1+1,y1+1,y2+1);
         
         
-        if(arr[i1][j1][j2]!=-1)
-            return arr[i1][j1][j2];
-        
-        int a=cherry(i1+1,j1-1,i2+1,j2-1,grid);
-        int b=cherry(i1+1,j1-1,i2+1,j2,grid);
-        int c=cherry(i1+1,j1-1,i2+1,j2+1,grid);
-        int d=cherry(i1+1,j1,i2+1,j2-1,grid);
-        int e=cherry(i1+1,j1,i2+1,j2,grid);
-        int f=cherry(i1+1,j1,i2+1,j2+1,grid);
-        int g=cherry(i1+1,j1+1,i2+1,j2-1,grid);
-        int h=cherry(i1+1,j1+1,i2+1,j2,grid);
-        int i=cherry(i1+1,j1+1,i2+1,j2+1,grid);
-        
-
-        int tempSum=0;
-        if(i1==i2&&j1==j2)
-            tempSum=grid[i1][j1];
-        else
-            tempSum=grid[i1][j1]+grid[i2][j2];
-        
-        return arr[i1][j1][j2] = tempSum + max(a,max(b,max(c,max(d,max(e,max(f,max(g,max(h,i))))))));
-    
+        return dp[x1][y1][y2] = cherry + max({a,b,c,d,e,f,g,h,i});
     }
-    
     int cherryPickup(vector<vector<int>>& grid) {
-        for(int i=0;i<71;i++){
-            for(int j=0;j<71;j++){
-                for(int k=0;k<71;k++){
-                    arr[i][j][k]=-1;
-                }
-            }
-        }
-        return cherry(0,0,0,grid[0].size()-1,grid);
+        memset(dp,-1,sizeof dp);
+        return get(grid,0,0,grid[0].size()-1);
     }
 };
