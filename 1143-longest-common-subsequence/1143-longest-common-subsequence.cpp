@@ -14,11 +14,7 @@ public:
             return dp[x][y] = max(lcs(a,b,x-1,y),lcs(a,b,x,y-1));
     }
     int longestCommonSubsequence(string text1, string text2) {
-        for(int i=0;i<text1.size();i++){
-            for(int j=0;j<text2.size();j++){
-                dp[i][j]=-1;
-            }
-        }
+        memset(dp,-1,sizeof dp);
         return lcs(text1,text2,text1.size()-1,text2.size()-1);
     }
 };
