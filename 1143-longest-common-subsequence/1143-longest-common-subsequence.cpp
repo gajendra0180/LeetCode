@@ -1,29 +1,24 @@
 class Solution {
 public:
     int dp[1001][1001];
-    
-    int lcs(string &a,string &b,int i,int j){
-        
-        if(i>=a.size()||j>=b.size())
+    int lcs(string &a,string &b,int x,int y){
+        if(x<0 || y<0)
             return 0;
+        if(dp[x][y]!=-1){
+            return dp[x][y];
+        }
         
-        if(dp[i][j]!=-1)
-            return dp[i][j];
-        
-        if(a[i]==b[j])
-            return dp[i][j] = 1+lcs(a,b,i+1,j+1);
+        if(a[x]==b[y])
+            return  dp[x][y] = 1+lcs(a,b,x-1,y-1);
         else
-            return dp[i][j] = max(lcs(a,b,i,j+1),lcs(a,b,i+1,j));
-        
+            return dp[x][y] = max(lcs(a,b,x-1,y),lcs(a,b,x,y-1));
     }
-    
     int longestCommonSubsequence(string text1, string text2) {
-        
-        for(int i=0;i<1001;i++){
-            for(int j=0;j<1001;j++){
+        for(int i=0;i<text1.size();i++){
+            for(int j=0;j<text2.size();j++){
                 dp[i][j]=-1;
             }
         }
-        return lcs(text1,text2,0,0);
+        return lcs(text1,text2,text1.size()-1,text2.size()-1);
     }
 };
