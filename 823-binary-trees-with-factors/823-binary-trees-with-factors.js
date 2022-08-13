@@ -1,21 +1,39 @@
-/**
- * @param {number[]} arr
- * @return {number}
- */
+
 var numFactoredBinaryTrees = function(arr) {
-    const map = new Map();
-    arr.sort((a,b)=>a-b);
-    let res=0;
-    for(let i=0;i<arr.length;i++){
-        let count=1;
-        for(let j=0;j<=i-1;j++){
-            if(arr[i]%arr[j]==0){
-                let val=map.get(arr[j])*map.get(arr[i]/arr[j]);
-                count+=val?val:0;
-            }
+
+    let dp = new Map()
+    
+    function makeRoot(element,arr,set){
+        let res=1;
+        if(dp.get(element)){
+            return dp.get(element);
         }
-        map.set(arr[i],count);
-        res+=count;
+        for(ele of set){
+            if(element%ele==0){
+                let factor1=ele,factor2=element/ele;
+                if(set.has(factor2))
+                    res+=makeRoot(factor1,arr,set)*makeRoot(factor2,arr,set); 
+            }
+            if(ele==element)break;
+        }
+        dp.set(element,res);
+        return res;
     }
+    
+    
+    
+    let res=0;
+    const set= new Set()
+    
+    arr.sort((a,b)=>a-b);
+    arr.map((e)=>set.add(e));
+    arr.map((ele)=>{
+        res+=makeRoot(ele,arr,set);
+    })
     return res%(1e9+7);
+
+
+
+
+
 };
