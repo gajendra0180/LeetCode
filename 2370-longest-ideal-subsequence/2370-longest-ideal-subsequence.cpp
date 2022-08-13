@@ -30,7 +30,7 @@ int get(string &s, int &k, int index, char lastWord)
     int longestIdealString(string s, int k) {
        char ch;
         for(int i=0;i<s.size();i++){
-            for(int j=0;j<=122;j++){
+            for(int j=97;j<=122;j++){
                 dp[i][j]=-1;
             }
         }
