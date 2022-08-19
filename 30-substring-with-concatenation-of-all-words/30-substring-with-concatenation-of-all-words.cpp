@@ -18,12 +18,11 @@ public:
                     break;
                 string subs=s.substr(i,w);
                 tm[subs]++;
-                if(pm.find(subs)==pm.end()){
-                    check=false;break;}
+                if(pm.find(subs)==pm.end())break;
                 // cout << s.substr(i, w) << " ";
                 i = i + w;
             }
-            if (check && tm == pm)
+            if (tm == pm)
                res.push_back(j);
             // cout << endl;
         }
