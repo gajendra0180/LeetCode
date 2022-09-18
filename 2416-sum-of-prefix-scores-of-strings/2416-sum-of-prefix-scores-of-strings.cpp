@@ -31,6 +31,7 @@ public:
             }
         }
     }
+//     Iterating over all the prefixes and summing up the occurences
     int dfs(Node* root,string word){
         Node* currNode=root;
         int res=0;
