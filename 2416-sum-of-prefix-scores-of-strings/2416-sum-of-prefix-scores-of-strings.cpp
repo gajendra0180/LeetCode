@@ -1,28 +1,58 @@
+class Node{
+    public:
+        int count;
+        char character;
+        vector<Node*>child;
+        Node(char ch,int c){
+            character=ch;
+            count=c;
+        }
+};
 class Solution {
 public:
+     Node* root= new Node('#',0);
+    void buildTrie(Node* root,string word){
+        Node* currNode=root;
+        for(auto ch:word){
+//      Iterating all the child nodes of the curr node
+            bool found=false;
+            for(auto childNode:currNode->child){
+                if(childNode->character==ch){
+                    currNode=childNode;
+                    currNode->count++;
+                    found=true;
+                    break;
+                }
+            }
+            if(found==false){
+                Node* newChild= new Node(ch,1);
+                currNode->child.push_back(newChild);
+                currNode=currNode->child.back();
+            }
+        }
+    }
+    int dfs(Node* root,string word){
+        Node* currNode=root;
+        int res=0;
+        for(auto ch:word){
+            for(auto childNode:currNode->child){
+                if(childNode->character==ch){
+                    res+=childNode->count;
+                    currNode=childNode;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
     vector<int> sumPrefixScores(vector<string>& words) {
-        unordered_map<size_t,int> pref;
-        hash<string> hash_fn;
-        vector<vector<size_t>> v;
         for(auto i:words){
-            string s;
-            vector<size_t>temp;
-            for(auto j:i){
-                s.push_back(j);
-                auto hf=hash_fn(s);
-                pref[hf]++;
-                temp.push_back(hf);
-            }
-            v.push_back(temp);
+            buildTrie(root,i);
         }
-        vector<int>r;
-        for(auto i:v){
-            int res=0;
-            for(auto j:i){
-                res+=pref[j];
-            }
-            r.push_back(res);
+        vector<int>res;
+        for(auto i:words){
+            res.push_back(dfs(root,i));
         }
-        return r;
+        return res;
     }
 };
