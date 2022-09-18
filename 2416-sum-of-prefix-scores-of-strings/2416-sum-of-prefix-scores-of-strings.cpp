@@ -11,7 +11,6 @@ public:
                 s.push_back(j);
                 auto hf=hash_fn(s);
                 pref[hf]++;
-                // temp.push_back(hf);
                 temp.push_back(hf);
             }
             v.push_back(temp);
